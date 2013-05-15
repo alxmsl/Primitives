@@ -44,19 +44,5 @@ abstract class AbstractProvider implements SetInterface, \IteratorAggregate {
         return $this->enlistedMode;
     }
 
-    /**
-     * Add item to set
-     * @param mixed $Item adding item
-     * @return bool result of adding item
-     */
-    abstract public function add($Item);
-
-    /**
-     * Check item in set
-     * @param mixed $Item checking item
-     * @return bool result of check existance
-     */
-    abstract public function exists($Item);
-
     abstract public function get($offset = null);
 }

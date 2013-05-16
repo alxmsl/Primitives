@@ -82,7 +82,11 @@ final class RedisProvider extends AbstractProvider {
         return $this->getRedis()->sismembers($this->getName(), $Item);
     }
 
-    public function duplicate() {
+    public function hasDuplicate() {
+        return $this->getRedis()->exists($this->getDuplicateName());
+    }
+
+    public function createDuplicate() {
         return $this->getRedis()->sdiffstore($this->getDuplicateName(), array($this->getName()));
     }
 

@@ -32,7 +32,9 @@ final class RedisIterator extends AbstractIterator {
     public function rewind() {
         /** @var RedisProvider $Provider */
         $Provider = $this->getProvider();
-        $Provider->duplicate();
+        if (!$Provider->hasDuplicate()) {
+            $Provider->createDuplicate();
+        }
 
         $this->position = null;
         $this->lastItem = '';

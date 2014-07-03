@@ -1,4 +1,4 @@
-Set
+Primitives
 ===
 
-Base classes for abstraction of the Set
+Base classes for abstract primitives: sets, queues etc.

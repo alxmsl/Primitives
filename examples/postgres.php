@@ -19,7 +19,8 @@ use alxmsl\Primitives\SetFactory;
 
 // Create new postgres connection
 $Connection = new Connection();
-$Connection->setUserName('postgres')
+$Connection->setNeedBusyCheckup(false)
+    ->setUserName('postgres')
     ->setPassword('postgres')
     ->setDatabase('postgres')
     ->setHost('localhost')

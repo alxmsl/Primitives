@@ -1,10 +1,7 @@
 {
-    "require":{
-        "alxmsl/Connection": "1.0.0"
-    },
     "name": "alxmsl/primitives",
-    "version": "1.0.0",
     "description": "Simple library with primitives: sets, queues etc.",
+    "keywords": ["redis", "postgres", "postgresql", "sets"],
     "license": "WTFPL",
     "authors": [
         {
@@ -12,8 +9,14 @@
             "email": "alexey.y.maslov@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
+    "support": {
+        "email": "alexey.y.maslov@gmail.com",
+        "issues": "https://github.com/alxmsl/Primitives/issues"
+    },
     "autoload": {
         "psr-4": {"alxmsl\\Primitives\\": "source/"}
+    },
+    "require":{
+        "alxmsl/connection": "1.0.3"
     }
 }

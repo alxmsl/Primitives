@@ -1,12 +1,18 @@
 <?php
+/*
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details.
+ */
 
-namespace Set\Provider;
-
-use Connection\Postgresql\Client\Connection,
-    RuntimeException,
-    Connection\Postgresql\Client\UndefinedTableException,
-    Connection\Postgresql\Client\DuplicateEntryException;
-use Set\Iterator\PostgresIterator;
+namespace alxmsl\Primitives\Set\Provider;
+use alxmsl\Connection\Postgresql\Connection;
+use alxmsl\Connection\Postgresql\Exception\DuplicateEntryException;
+use alxmsl\Connection\Postgresql\Exception\UndefinedTableException;
+use alxmsl\Primitives\Set\Iterator\PostgresIterator;
+use RuntimeException;
 
 /**
  * Postgres implementation for set
@@ -34,13 +40,16 @@ final class PostgresProvider extends AbstractProvider {
     ';
 
     /**
-     * Check existance item in the set query
+     * Check existence item in the set query
      */
     const QUERY_EXISTS = '
         SELECT COUNT(*) FROM {{ tbl(name) }}
         WHERE key = {{ str(key) }}
     ';
 
+    /**
+     * Get one item from the set
+     */
     const QUERY_GET = '
         SELECT * FROM {{ tbl(name) }}
         {{ IF id }}
@@ -51,12 +60,19 @@ final class PostgresProvider extends AbstractProvider {
     ';
 
     /**
-     * @var Connection postgresql connection
+     * @var Connection postgres connection instance
      */
     private $Postgres = null;
 
+    /**
+     * @var null|PostgresIterator postgres iterator instance
+     */
     private $Iterator = null;
 
+    /**
+     * Getter for the postgres iterator
+     * @return PostgresIterator postgres iterator instance
+     */
     public function getIterator() {
         if (is_null($this->Iterator)) {
             $this->Iterator = new PostgresIterator();
@@ -66,8 +82,8 @@ final class PostgresProvider extends AbstractProvider {
     }
 
     /**
-     * Postgresql connection setter
-     * @param \Connection\Postgresql\Client\Connection $Postgres postgresql connection
+     * Postgres connection setter
+     * @param Connection $Postgres postgres connection instance
      * @return PostgresProvider self
      */
     public function setPostgres(Connection $Postgres) {
@@ -76,9 +92,9 @@ final class PostgresProvider extends AbstractProvider {
     }
 
     /**
-     * Postgresql connection getter
-     * @return Connection postgresql connection
-     * @throws \RuntimeException when connection is not set
+     * Postgres connection getter
+     * @return Connection postgres connection instance
+     * @throws RuntimeException when connection is not set
      */
     private function getPostgres() {
         if (is_null($this->Postgres)) {
@@ -132,6 +148,11 @@ final class PostgresProvider extends AbstractProvider {
         }
     }
 
+    /**
+     * Set item getter
+     * @param mixed $offset set items offset
+     * @return mixed set item
+     */
     public function get($offset = null) {
         $parameters = array(
             'name' => $this->getName(),

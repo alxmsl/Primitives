@@ -1,0 +1,19 @@
+{
+    "require":{
+        "alxmsl/Connection": "1.0.0"
+    },
+    "name": "alxmsl/primitives",
+    "version": "1.0.0",
+    "description": "Simple library with primitives: sets, queues etc.",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "alxmsl",
+            "email": "alexey.y.maslov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {"alxmsl\\Primitives\\": "source/"}
+    }
+}

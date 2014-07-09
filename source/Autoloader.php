@@ -1,8 +1,16 @@
 <?php
-namespace Set;
+/*
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details.
+ */
+
+namespace alxmsl\Primitives;
 
 // append Set autoloader
-spl_autoload_register(array('\Set\Autoloader', 'autoload'));
+spl_autoload_register(array('\alxmsl\Primitives\Autoloader', 'autoload'));
 
 /**
  * Base class
@@ -14,19 +22,19 @@ final class Autoloader {
      * @var array array of available classes
      */
     private static $classes = array(
-        'Set\\Autoloader' => 'Autoloader.php',
+        'alxmsl\\Primitives\\Autoloader' => 'Autoloader.php',
 
-        'Set\\SetFactory' => 'SetFactory.php',
-        'Set\\SetInterface' => 'SetInterface.php',
-        'Set\\Set' => 'Set.php',
+        'alxmsl\\Primitives\\SetFactory'        => 'SetFactory.php',
+        'alxmsl\\Primitives\\Set\\SetInterface' => 'Set/SetInterface.php',
+        'alxmsl\\Primitives\\Set\\Set'          => 'Set/Set.php',
 
-        'Set\\Provider\\AbstractProvider' => 'Provider/AbstractProvider.php',
-        'Set\\Provider\\RedisProvider' => 'Provider/RedisProvider.php',
-        'Set\\Provider\\PostgresProvider' => 'Provider/PostgresProvider.php',
+        'alxmsl\\Primitives\\Set\\Provider\\AbstractProvider' => 'Set/Provider/AbstractProvider.php',
+        'alxmsl\\Primitives\\Set\\Provider\\RedisProvider'    => 'Set/Provider/RedisProvider.php',
+        'alxmsl\\Primitives\\Set\\Provider\\PostgresProvider' => 'Set/Provider/PostgresProvider.php',
 
-        'Set\\Iterator\\AbstractIterator' => 'Iterator/AbstractIterator.php',
-        'Set\\Iterator\\PostgresIterator' => 'Iterator/PostgresIterator.php',
-        'Set\\Iterator\\RedisIterator' => 'Iterator/RedisIterator.php',
+        'alxmsl\\Primitives\\Set\\Iterator\\AbstractIterator' => 'Set/Iterator/AbstractIterator.php',
+        'alxmsl\\Primitives\\Set\\Iterator\\PostgresIterator' => 'Set/Iterator/PostgresIterator.php',
+        'alxmsl\\Primitives\\Set\\Iterator\\RedisIterator'    => 'Set/Iterator/RedisIterator.php',
     );
 
     /**

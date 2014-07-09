@@ -1,11 +1,18 @@
 <?php
+/*
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details.
+ */
 
-namespace Set;
-
-use Set\Provider\RedisProvider,
-    Set\Provider\PostgresProvider,
-    Connection\Redis\Client\Connection as RedisConnection,
-    Connection\Postgresql\Client\Connection as PostgresConnection;
+namespace alxmsl\Primitives;
+use alxmsl\Connection\Redis\Connection as RedisConnection;
+use alxmsl\Connection\Postgresql\Connection as PostgresConnection;
+use alxmsl\Primitives\Set\Provider\PostgresProvider;
+use alxmsl\Primitives\Set\Provider\RedisProvider;
+use alxmsl\Primitives\Set\Set;
 
 /**
  * Factory for set creation
@@ -16,7 +23,7 @@ final class SetFactory {
     /**
      * Create new set on redis
      * @param string $name set name
-     * @param \Connection\Redis\Client\Connection $Connection redis connection
+     * @param RedisConnection $Connection redis connection
      * @param bool $isEnlisted enable enlisted functionality for set
      * @return Set created set
      */
@@ -33,7 +40,7 @@ final class SetFactory {
     /**
      * Create new set on postgresql
      * @param string $name set name
-     * @param \Connection\Postgresql\Client\Connection $Connection postgresql connection
+     * @param PostgresConnection $Connection postgresql connection instance
      * @return Set created set
      */
     public static function createPostgresSet($name, PostgresConnection $Connection) {

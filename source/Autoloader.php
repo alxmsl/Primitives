@@ -22,19 +22,23 @@ final class Autoloader {
      * @var array array of available classes
      */
     private static $classes = array(
-        'alxmsl\\Primitives\\Autoloader' => 'Autoloader.php',
+        'alxmsl\\Primitives\\Autoloader'   => 'Autoloader.php',
+        'alxmsl\\Primitives\\SetFactory'   => 'SetFactory.php',
+        'alxmsl\\Primitives\\QueueFactory' => 'QueueFactory.php',
 
-        'alxmsl\\Primitives\\SetFactory'        => 'SetFactory.php',
         'alxmsl\\Primitives\\Set\\SetInterface' => 'Set/SetInterface.php',
         'alxmsl\\Primitives\\Set\\Set'          => 'Set/Set.php',
-
         'alxmsl\\Primitives\\Set\\Provider\\AbstractProvider' => 'Set/Provider/AbstractProvider.php',
         'alxmsl\\Primitives\\Set\\Provider\\RedisProvider'    => 'Set/Provider/RedisProvider.php',
         'alxmsl\\Primitives\\Set\\Provider\\PostgresProvider' => 'Set/Provider/PostgresProvider.php',
-
         'alxmsl\\Primitives\\Set\\Iterator\\AbstractIterator' => 'Set/Iterator/AbstractIterator.php',
         'alxmsl\\Primitives\\Set\\Iterator\\PostgresIterator' => 'Set/Iterator/PostgresIterator.php',
         'alxmsl\\Primitives\\Set\\Iterator\\RedisIterator'    => 'Set/Iterator/RedisIterator.php',
+
+        'alxmsl\\Primitives\\Queue\\QueueInterface'             => 'Queue/QueueInterface.php',
+        'alxmsl\\Primitives\\Queue\\Queue'                      => 'Queue/Queue.php',
+        'alxmsl\\Primitives\\Queue\\Provider\\AbstractProvider' => 'Queue/Provider/AbstractProvider.php',
+        'alxmsl\\Primitives\\Queue\\Provider\\RedisProvider'    => 'Queue/Provider/RedisProvider.php',
     );
 
     /**

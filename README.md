@@ -63,6 +63,37 @@ And use set`s iterator
         var_dump($item);
     }
 
+Queue on Redis storage usage example
+-------
+
+    use alxmsl\Connection\Redis\RedisFactory;
+    use alxmsl\Primitives\QueueFactory;
+
+    $Connection = RedisFactory::createRedisByConfig(array(
+        'host' => 'localhost',
+        'port' => 6379,
+    ));
+
+    $Queue = QueueFactory::createRedisQueue('myqueue_01', $Connection);
+
+    $queue = array(1, 2, 4, 5, 6, 7, 8, 5);
+    foreach ($queue as $item) {
+        $Queue->enqueue($item);
+    }
+
+    $result = array();
+    for (;;) {
+        $item = $Queue->dequeue();
+        if ($item !== false) {
+            $result[] = $item;
+        } else {
+            break;
+        }
+    }
+
+    $diff = array_diff($queue, $result);
+    var_dump(empty($diff));
+
 License
 -------
 Copyright © 2014 Alexey Maslov <alexey.y.maslov@gmail.com>

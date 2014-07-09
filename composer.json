@@ -1,7 +1,7 @@
 {
     "name": "alxmsl/primitives",
     "description": "Simple library with primitives: sets, queues etc.",
-    "keywords": ["redis", "postgres", "postgresql", "sets"],
+    "keywords": ["redis", "postgres", "postgresql", "sets", "queues"],
     "license": "WTFPL",
     "authors": [
         {

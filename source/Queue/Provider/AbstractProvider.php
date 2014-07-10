@@ -9,13 +9,14 @@
 
 namespace alxmsl\Primitives\Queue\Provider;
 use alxmsl\Primitives\Queue\QueueInterface;
+use IteratorAggregate;
 
 /**
  * Abstract queue storage provider class
  * @author alxmsl
  * @date 7/9/14
  */ 
-abstract class AbstractProvider implements QueueInterface {
+abstract class AbstractProvider implements QueueInterface, IteratorAggregate {
     /**
      * @var string queue name
      */

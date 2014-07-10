@@ -9,6 +9,7 @@
 
 namespace alxmsl\Primitives\Queue\Provider;
 use alxmsl\Connection\Redis\Connection;
+use alxmsl\Primitives\Queue\Iterator\RedisIterator;
 
 /**
  * Redis storage provider for queues
@@ -17,9 +18,26 @@ use alxmsl\Connection\Redis\Connection;
  */ 
 final class RedisProvider extends AbstractProvider {
     /**
+     * @var null|RedisIterator queue`s iterator instance
+     */
+    private $Iterator = null;
+
+    /**
      * @var null|Connection Redis connection instance
      */
     private $Connection = null;
+
+    /**
+     * Redis queue iterator getter
+     * @return RedisIterator redis queue iterator
+     */
+    public function getIterator() {
+        if (is_null($this->Iterator)) {
+            $this->Iterator = new RedisIterator();
+            $this->Iterator->setProvider($this);
+        }
+        return $this->Iterator;
+    }
 
     /**
      * Redis connection setter

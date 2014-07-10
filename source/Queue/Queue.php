@@ -9,13 +9,16 @@
 
 namespace alxmsl\Primitives\Queue;
 use alxmsl\Primitives\Queue\Provider\AbstractProvider;
+use IteratorAggregate;
+use LogicException;
+use Traversable;
 
 /**
  * Queue class
  * @author alxmsl
  * @date 7/9/14
  */ 
-final class Queue implements QueueInterface {
+final class Queue implements QueueInterface, IteratorAggregate {
     /**
      * @var null|AbstractProvider queue storage provider insatnce
      */
@@ -38,6 +41,20 @@ final class Queue implements QueueInterface {
     public function getProvider() {
         return $this->Provider;
     }
+
+    /**
+     * Queue iterator getter
+     * @return Traversable queue`s iterator instance
+     * @throws LogicException when queue provider did not set
+     */
+    public function getIterator() {
+        if ($this->Provider instanceof AbstractProvider) {
+            return $this->getProvider()->getIterator();
+        } else {
+            throw new LogicException('Queue provider did not set');
+        }
+    }
+
 
     /**
      * Enqueue item to storage

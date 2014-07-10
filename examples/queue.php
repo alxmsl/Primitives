@@ -40,3 +40,15 @@ for (;;) {
 
 $diff = array_diff($queue, $result);
 var_dump(empty($diff));
+
+foreach ($queue as $item) {
+    $Queue->enqueue($item);
+}
+
+$result = array();
+foreach ($Queue->getIterator() as $item) {
+    $result[] = $item;
+}
+
+$diff = array_diff($queue, $result);
+var_dump(empty($diff));

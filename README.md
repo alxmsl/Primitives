@@ -94,6 +94,20 @@ Queue on Redis storage usage example
     $diff = array_diff($queue, $result);
     var_dump(empty($diff));
 
+Of course, queue instance implements[Iterator](php.net/manual/class.iterator.php) interface. Usage example:
+
+    foreach ($queue as $item) {
+        $Queue->enqueue($item);
+    }
+
+    $result = array();
+    foreach ($Queue->getIterator() as $item) {
+        $result[] = $item;
+    }
+
+    $diff = array_diff($queue, $result);
+    var_dump(empty($diff));
+
 License
 -------
 Copyright © 2014 Alexey Maslov <alexey.y.maslov@gmail.com>

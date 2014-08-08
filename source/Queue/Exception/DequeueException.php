@@ -1,0 +1,12 @@
+<?php
+
+namespace alxmsl\Primitives\Queue\Exception;
+use Exception;
+
+/**
+ * 
+ * @author alxmsl
+ * @date 8/5/14
+ */ 
+final class DequeueException extends Exception {}
+ 

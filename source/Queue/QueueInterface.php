@@ -8,6 +8,8 @@
  */
 
 namespace alxmsl\Primitives\Queue;
+use alxmsl\Primitives\Queue\Exception\EnqueueException;
+use alxmsl\Primitives\Queue\Exception\DequeueException;
 
 /**
  * Queue primitive interface
@@ -18,11 +20,13 @@ interface QueueInterface {
     /**
      * Enqueue item
      * @param mixed $Item queued item
+     * @throws EnqueueException when queue instance was not available
      */
     public function enqueue($Item);
 
     /**
      * Dequeque item
+     * @throws DequeueException when queue instance was not available
      * @return mixed|false queued item or FALSE if queue is empty
      */
     public function dequeue();

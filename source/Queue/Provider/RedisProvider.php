@@ -9,6 +9,9 @@
 
 namespace alxmsl\Primitives\Queue\Provider;
 use alxmsl\Connection\Redis\Connection;
+use alxmsl\Connection\Redis\Exception\ConnectException;
+use alxmsl\Primitives\Queue\Exception\DequeueException;
+use alxmsl\Primitives\Queue\Exception\EnqueueException;
 use alxmsl\Primitives\Queue\Iterator\RedisIterator;
 
 /**
@@ -58,19 +61,29 @@ final class RedisProvider extends AbstractProvider {
     }
 
     /**
-     * Enqueue item to Redis storage
+     * Enqueue item
      * @param mixed $Item queued item
+     * @throws EnqueueException when queue instance was not available
      */
     public function enqueue($Item) {
-        $this->getConnection()->lpush($this->getName(), $Item);
+        try {
+            $this->getConnection()->lpush($this->getName(), $Item);
+        } catch (ConnectException $Ex) {
+            throw new EnqueueException($Ex);
+        }
     }
 
     /**
-     * Dequeque item from Redis storage
+     * Dequeque item
+     * @throws DequeueException when queue instance was not available
      * @return mixed|false queued item or FALSE if queue is empty
      */
     public function dequeue() {
-        return $this->getConnection()->rpop($this->getName());
+        try {
+            return $this->getConnection()->rpop($this->getName());
+        } catch (ConnectException $Ex) {
+            throw new DequeueException($Ex);
+        }
     }
 }
  

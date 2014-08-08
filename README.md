@@ -108,6 +108,30 @@ Of course, queue instance implements[Iterator](php.net/manual/class.iterator.php
     $diff = array_diff($queue, $result);
     var_dump(empty($diff));
 
+Queues pool usage example
+-------
+
+    $Queue1 = QueueFactory::createRedisQueue('myqueue_pool_01', $Connection1);
+    $Queue2 = QueueFactory::createRedisQueue('myqueue_pool_02', $Connection2);
+
+    // Create new pool
+    $Pool = new Pool();
+    $Pool->addQueue($Queue1)
+        ->addQueue($Queue2);
+
+    // Write to pool
+    $items = range(1, 5);
+    foreach ($items as $item) {
+        $Pool->enqueue($item);
+        printf("enqueued: %s\n", $item);
+    }
+
+    // Flush pool
+    while ($Item = $Pool->dequeue()) {
+        printf("dequeued: %s\n", $Item);
+    }
+
+
 License
 -------
 Copyright © 2014 Alexey Maslov <alexey.y.maslov@gmail.com>

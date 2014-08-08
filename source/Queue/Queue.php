@@ -8,7 +8,10 @@
  */
 
 namespace alxmsl\Primitives\Queue;
+use alxmsl\Primitives\Pool\IdentificationInterface;
 use alxmsl\Primitives\Queue\Provider\AbstractProvider;
+use alxmsl\Primitives\Queue\Exception\DequeueException;
+use alxmsl\Primitives\Queue\Exception\EnqueueException;
 use IteratorAggregate;
 use LogicException;
 use Traversable;
@@ -18,7 +21,7 @@ use Traversable;
  * @author alxmsl
  * @date 7/9/14
  */ 
-final class Queue implements QueueInterface, IteratorAggregate {
+final class Queue implements QueueInterface, IdentificationInterface, IteratorAggregate {
     /**
      * @var null|AbstractProvider queue storage provider insatnce
      */
@@ -29,7 +32,7 @@ final class Queue implements QueueInterface, IteratorAggregate {
      * @param null|AbstractProvider $Provider queue storage provider instance
      * @return Queue self instance
      */
-    public function setProvider($Provider) {
+    public function setProvider(AbstractProvider $Provider) {
         $this->Provider = $Provider;
         return $this;
     }
@@ -55,17 +58,26 @@ final class Queue implements QueueInterface, IteratorAggregate {
         }
     }
 
+    /**
+     * Instance identificator getter
+     * @return string instance identificator
+     */
+    public function getId() {
+        return $this->getProvider()->getName();
+    }
 
     /**
-     * Enqueue item to storage
+     * Enqueue item
      * @param mixed $Item queued item
+     * @throws EnqueueException when queue instance was not available
      */
     public function enqueue($Item) {
         $this->getProvider()->enqueue($Item);
     }
 
     /**
-     * Dequeque item from storage
+     * Dequeque item
+     * @throws DequeueException when queue instance was not available
      * @return mixed|false queued item or FALSE if queue is empty
      */
     public function dequeue() {

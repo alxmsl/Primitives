@@ -80,6 +80,15 @@ final class PoolInstance {
     }
 
     /**
+     * External reset for mistake counter
+     * @return PoolInstance self instance
+     */
+    public function resetMistakeCount() {
+        $this->mistakeCount = 0;
+        return $this;
+    }
+
+    /**
      * Add instance to pool
      * @param IdentificationInterface $Instance added instance
      * @return PoolInstance self instance

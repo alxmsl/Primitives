@@ -50,6 +50,7 @@ final class Pool extends AbstractPool implements QueueInterface {
                 $this->getInstance()->getGenerator()->throw($Exception);
             }
         }
+        $this->getInstance()->resetMistakeCount();
     }
 
     /**
@@ -74,6 +75,7 @@ final class Pool extends AbstractPool implements QueueInterface {
                 $this->getInstance()->getGenerator()->throw($Exception);
             }
         }
+        $this->getInstance()->resetMistakeCount();
         return false;
     }
 }

@@ -100,6 +100,25 @@ trait CacheTrait {
     }
 
     /**
+     * Caching incrementer
+     * @param string $field caching field name
+     * @param mixed $value increment value
+     */
+    public function increment($field, $value) {
+        $this->load(true);
+
+        if (is_null(self::$Value)) {
+            self::$Value = new stdClass();
+        }
+
+        if (!isset(self::$Value->{$field})) {
+            self::$Value->{$field} = 0;
+        }
+        self::$Value->{$field} += (int) $value;
+        $this->save(true);
+    }
+
+    /**
      * Invalidate cache
      */
     public function invalidate() {

@@ -102,7 +102,7 @@ trait CacheTrait {
     /**
      * Caching incrementer
      * @param string $field caching field name
-     * @param mixed $value increment value
+     * @param int $value increment value
      */
     public function increment($field, $value) {
         $this->load(true);

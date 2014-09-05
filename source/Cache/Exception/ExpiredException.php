@@ -8,12 +8,11 @@
  */
 
 namespace alxmsl\Primitives\Cache\Exception;
-use Exception;
 
 /**
- * Exception class when cached key not found
+ * Exception for when expired key used
  * @author alxmsl
- * @date 8/29/14
+ * @date 9/3/14
  */
-class MissingException extends Exception {}
+final class ExpiredException extends MissingException {}
  

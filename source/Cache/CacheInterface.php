@@ -39,13 +39,6 @@ interface CacheInterface {
     public function append($field, $Value);
 
     /**
-     * Caching incrementer
-     * @param string $field caching field name
-     * @param int $value increment value
-     */
-    public function increment($field, $value);
-
-    /**
      * Invalidate cache
      */
     public function invalidate();

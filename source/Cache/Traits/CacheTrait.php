@@ -8,7 +8,9 @@
  */
 
 namespace alxmsl\Primitives\Cache\Traits;
+use alxmsl\Primitives\Cache\Exception\ExpiredException;
 use alxmsl\Primitives\Cache\Exception\MissingException;
+use alxmsl\Primitives\Cache\Item;
 use stdClass;
 
 /**
@@ -33,10 +35,18 @@ trait CacheTrait {
      * @return mixed cached value
      */
     protected function getValueField($field) {
-        if (!isset(self::$Value->{$field})) {
-            self::$Value->{$field} = new stdClass();
+        if (is_null(self::$Value->getValue())
+            || !isset(self::$Value->getValue()->{$field})) {
+
+            $Item = new Item($field);
+            self::$Value->setValue($Item);
         }
-        return self::$Value->{$field};
+        return self::$Value->getValue()->{$field};
+
+//        if (!isset(self::$Value->{$field})) {
+//            self::$Value->{$field} = new Item($field);
+//        }
+//        return self::$Value->{$field};
     }
 
     /**
@@ -44,39 +54,50 @@ trait CacheTrait {
      * @param string $field needed field name
      */
     protected function unsetValueField($field) {
-        unset(self::$Value->{$field});
+        unset(self::$Value->getValue()->{$field});
     }
 
     /**
      * Cached value getter
      * @param string $field field name
-     * @return mixed cached value
+     * @return Item cached value
      * @throws MissingException when needed field not found
      */
     public function get($field) {
         $this->load(false);
-        if (isset(self::$Value->{$field})) {
-            return self::$Value->{$field};
-        } else {
-            throw new MissingException(sprintf('field %s not found', $field));
+        if (!is_null(self::$Value->getValue())) {
+            /** @var stdClass $Value */
+            $Value = self::$Value->getValue();
+            if (isset($Value->{$field})) {
+                /** @var Item $Item */
+                $Item = $Value->{$field};
+                if ($Item->isExpired()) {
+                    $this->unsetValueField($field);
+                    throw new ExpiredException(sprintf('values from field %s was expire', $field));
+                } else {
+                    return $Item;
+                }
+            }
         }
+        throw new MissingException(sprintf('field %s not found', $field));
     }
 
     /**
      * Caching setter
      * @param string $field caching field name
      * @param mixed $Value caching value
+     * @param int $type value type
+     * @param int $expiration expiration timestamp
      */
-    public function set($field, $Value) {
+    public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0) {
         if (is_null(self::$Value)) {
             $this->load(false);
         }
 
-        if (is_null(self::$Value)) {
-            self::$Value = new stdClass();
-        }
-
-        self::$Value->{$field} = $Value;
+        $Item = new Item($field, $type);
+        $Item->setValue($Value)
+            ->setExpiration($expiration);
+        self::$Value->setValue($Item);
         $this->save();
     }
 
@@ -84,37 +105,24 @@ trait CacheTrait {
      * Caching appender
      * @param string $field caching field name
      * @param mixed $Value appending value
+     * @param int $type value type
+     * @param int $expiration expiration timestamp
      */
-    public function append($field, $Value) {
+    public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0) {
         $this->load(true);
 
-        if (is_null(self::$Value)) {
-            self::$Value = new stdClass();
+        if (is_null(self::$Value->getValue())
+            || !isset(self::$Value->getValue()->{$field})) {
+
+            $Item = new Item($field, $type);
+        } else {
+            /** @var Item $Item */
+            $Item = self::$Value->getValue()->{$field};
         }
 
-        if (!isset(self::$Value->{$field})) {
-            self::$Value->{$field} = [];
-        }
-        array_push(self::$Value->{$field}, $Value);
-        $this->save(true);
-    }
-
-    /**
-     * Caching incrementer
-     * @param string $field caching field name
-     * @param int $value increment value
-     */
-    public function increment($field, $value) {
-        $this->load(true);
-
-        if (is_null(self::$Value)) {
-            self::$Value = new stdClass();
-        }
-
-        if (!isset(self::$Value->{$field})) {
-            self::$Value->{$field} = 0;
-        }
-        self::$Value->{$field} += (int) $value;
+        $Item->setExpiration($expiration)
+            ->append($Value);
+        self::$Value->setValue($Item);
         $this->save(true);
     }
 

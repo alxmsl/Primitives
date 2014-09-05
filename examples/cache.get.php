@@ -14,14 +14,33 @@
 include '../vendor/autoload.php';
 
 use alxmsl\Primitives\Cache\Cache;
+use alxmsl\Primitives\Cache\Exception\ExpiredException;
+use alxmsl\Primitives\Cache\Exception\MissingException;
+use alxmsl\Primitives\Cache\Item;
 use alxmsl\Primitives\CacheFactory;
 
 $Connection = new Memcached('cache');
 $Connection->addServer('localhost', 11211);
 
 $Cache = CacheFactory::createMemcachedCache('key_01', Cache::getClass(), $Connection);
-$Cache->set('value', 7);
+
+// Cache missing example
+$key = 'value_' . mt_rand(100, 500);
+try {
+    $Cache->get($key);
+    printf("error: key %s found\n", $key);
+} catch (MissingException $Ex) {}
+
+// Cached value expiration example
+$Cache->set($key, 7, Item::TYPE_NUMBER, time() + 1);
+sleep(2);
+try {
+    $Cache->get($key);
+    printf("error: key %s not expired\n", $key);
+} catch (ExpiredException $Ex) {}
+
+$Cache->set('some_key', 7);
 unset($Cache);
 
 $Cache = CacheFactory::createMemcachedCache('key_01', Cache::getClass(), $Connection);
-var_dump($Cache->get('value') == 7);
+var_dump($Cache->get('some_key')->getValue() == 7);

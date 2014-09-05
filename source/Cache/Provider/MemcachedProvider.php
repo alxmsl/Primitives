@@ -8,6 +8,7 @@
  */
 
 namespace alxmsl\Primitives\Cache\Provider;
+use alxmsl\Primitives\Cache\Item;
 use Memcached;
 use stdClass;
 
@@ -57,7 +58,7 @@ final class MemcachedProvider implements ProviderInterface {
             : $this->getConnection()->get($key);
 
         if ($this->getConnection()->getResultCode() != Memcached::RES_SUCCESS) {
-            $Result = new stdClass();
+            $Result = new Item($key);
         }
         return $Result;
     }

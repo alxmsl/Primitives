@@ -130,6 +130,7 @@ trait CacheTrait {
      * Invalidate cache
      */
     public function invalidate() {
+        $this->load(true);
         $this->clear();
         self::$Value = null;
         $this->save();

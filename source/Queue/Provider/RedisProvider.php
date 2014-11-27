@@ -85,5 +85,13 @@ final class RedisProvider extends AbstractProvider {
             throw new DequeueException($Ex);
         }
     }
+
+    /**
+     * Get queue size
+     * @return int queue size
+     */
+    public function getSize() {
+        return $this->getConnection()->llen($this->getName());
+    }
 }
  

@@ -30,5 +30,11 @@ interface QueueInterface {
      * @return mixed|false queued item or FALSE if queue is empty
      */
     public function dequeue();
+
+    /**
+     * Get queue size
+     * @return int queue size
+     */
+    public function getSize();
 }
  

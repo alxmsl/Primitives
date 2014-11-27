@@ -78,5 +78,18 @@ final class Pool extends AbstractPool implements QueueInterface {
         $this->getInstance()->resetMistakeCount();
         return false;
     }
+
+    /**
+     * Get queue size
+     * @return int queue size
+     */
+    public function getSize() {
+        $result = 0;
+        foreach ($this->getInstance()->getGenerator() as $Queue) {
+            /** @var Queue $Queue */
+            $result += $Queue->getSize();
+        }
+        return $result;
+    }
 }
  

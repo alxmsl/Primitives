@@ -83,5 +83,13 @@ final class Queue implements QueueInterface, IdentificationInterface, IteratorAg
     public function dequeue() {
         return $this->getProvider()->dequeue();
     }
+
+    /**
+     * Get queue size
+     * @return int queue size
+     */
+    public function getSize() {
+        return $this->getProvider()->getSize();
+    }
 }
  

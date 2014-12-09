@@ -24,10 +24,12 @@ final class SemaphoreFactory {
      * @param int $value semaphore initial value
      * @return Semaphore semaphore instance
      */
-    public static function createRedisSemaphore(Connection $Connection, $name, $value = 1) {
+    public static function createRedisSemaphore(Connection $Connection, $name, $timeout = 1, $ttl = 5, $value = 1) {
         $Provider = new RedisProvider();
         $Provider->setConnection($Connection);
         $Semaphore = new Semaphore($name, $value);
-        return $Semaphore->setProvider($Provider);
+        return $Semaphore->setTimeout($timeout)
+            ->setTtl($ttl)
+            ->setProvider($Provider);
     }
 }

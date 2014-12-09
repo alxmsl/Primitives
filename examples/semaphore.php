@@ -27,6 +27,10 @@ $Connection = RedisFactory::createRedisByConfig(array(
 $Semaphore = SemaphoreFactory::createRedisSemaphore($Connection, 'locker');
 
 // Use semaphore
-$Semaphore->wait();
-sleep(1);
-$Semaphore->signal();
+$result = $Semaphore->wait();
+if ($result) {
+    sleep(1);
+    $Semaphore->signal();
+} else {
+    printf("semaphore are locked now\n");
+}

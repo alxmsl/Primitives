@@ -117,9 +117,10 @@ final class Semaphore implements SemaphoreInterface {
 
     /**
      * Start waiting a semaphore method
+     * @return bool semaphore waiting result
      */
     public function wait() {
-        $this->getProvider()->wait();
+        return $this->getProvider()->wait();
     }
 
     /**

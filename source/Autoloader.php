@@ -22,9 +22,10 @@ final class Autoloader {
      * @var array array of available classes
      */
     private static $classes = array(
-        'alxmsl\\Primitives\\Autoloader'   => 'Autoloader.php',
-        'alxmsl\\Primitives\\SetFactory'   => 'SetFactory.php',
-        'alxmsl\\Primitives\\QueueFactory' => 'QueueFactory.php',
+        'alxmsl\\Primitives\\Autoloader'       => 'Autoloader.php',
+        'alxmsl\\Primitives\\SetFactory'       => 'SetFactory.php',
+        'alxmsl\\Primitives\\QueueFactory'     => 'QueueFactory.php',
+        'alxmsl\\Primitives\\SemaphoreFactory' => 'SemaphoreFactory.php',
 
         'alxmsl\\Primitives\\Set\\SetInterface' => 'Set/SetInterface.php',
         'alxmsl\\Primitives\\Set\\Set'          => 'Set/Set.php',
@@ -39,6 +40,12 @@ final class Autoloader {
         'alxmsl\\Primitives\\Queue\\Queue'                      => 'Queue/Queue.php',
         'alxmsl\\Primitives\\Queue\\Provider\\AbstractProvider' => 'Queue/Provider/AbstractProvider.php',
         'alxmsl\\Primitives\\Queue\\Provider\\RedisProvider'    => 'Queue/Provider/RedisProvider.php',
+
+        'alxmsl\\Primitives\\Semaphore\\Exception\\StorageException' => 'Semaphore/Exception/StorageException.php',
+        'alxmsl\\Primitives\\Semaphore\\Provider\\AbstractProvider'  => 'Semaphore/Provider/AbstractProvider.php',
+        'alxmsl\\Primitives\\Semaphore\\Provider\\RedisProvider'     => 'Semaphore/Provider/RedisProvider.php',
+        'alxmsl\\Primitives\\Semaphore\\SemaphoreInterface'          => 'Semaphore/SemaphoreInterface.php',
+        'alxmsl\\Primitives\\Semaphore\\Semaphore'                   => 'Semaphore/Semaphore.php',
     );
 
     /**

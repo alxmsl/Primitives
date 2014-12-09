@@ -170,6 +170,11 @@ Hierarchical cache usage example
         var_dump(true);
     }
 
+Semaphore usage example
+-------
+
+
+
 License
 -------
 Copyright © 2014 Alexey Maslov <alexey.y.maslov@gmail.com>

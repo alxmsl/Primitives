@@ -173,7 +173,17 @@ Hierarchical cache usage example
 Semaphore usage example
 -------
 
-
+    // Create semaphore instance
+    $Semaphore = SemaphoreFactory::createRedisSemaphore($Connection, 'locker');
+    
+    // Use semaphore
+    $result = $Semaphore->wait();
+    if ($result) {
+        sleep(1);
+        $Semaphore->signal();
+    } else {
+        printf("semaphore are locked now\n");
+    }
 
 License
 -------

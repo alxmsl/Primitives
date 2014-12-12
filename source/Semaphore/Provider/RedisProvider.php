@@ -115,7 +115,7 @@ EOD;
                         $this->getValue(),
                         $this->getTtl(),
                     ]);
-                $this->isUsed = false;
+                $this->held = false;
             } catch (ConnectException $Ex) {
                 throw new StorageException('semaphores storage unavailable');
             }

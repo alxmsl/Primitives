@@ -8,6 +8,9 @@
  */
 
 namespace alxmsl\Primitives\Cache\Traits;
+use alxmsl\Primitives\Cache\Cache;
+use alxmsl\Primitives\Cache\CacheInterface;
+use alxmsl\Primitives\Cache\Exception\CasErrorException;
 use alxmsl\Primitives\Cache\Exception\ExpiredException;
 use alxmsl\Primitives\Cache\Exception\MissingException;
 use alxmsl\Primitives\Cache\Item;
@@ -25,7 +28,7 @@ trait CacheTrait {
     private $name = '';
 
     /**
-     * @var null|stdClass cached value
+     * @var null|Item cached value
      */
     private static $Value = null;
 
@@ -107,30 +110,40 @@ trait CacheTrait {
      * @param mixed $Value appending value
      * @param int $type value type
      * @param int $expiration expiration timestamp
+     * @param int $tries append tries count
      */
-    public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0) {
-        $this->load(true);
+    public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = 3) {
+        if ($tries > 0) {
+            $this->load(true);
 
-        if (is_null(self::$Value->getValue())
-            || !isset(self::$Value->getValue()->{$field})) {
+            if (is_null(self::$Value->getValue())
+                || !isset(self::$Value->getValue()->{$field})) {
 
-            $Item = new Item($field, $type);
+                $Item = new Item($field, $type);
+            } else {
+                /** @var Item $Item */
+                $Item = self::$Value->getValue()->{$field};
+            }
+
+            $Item->setExpiration($expiration)
+                ->append($Value);
+            self::$Value->setValue($Item);
+            try {
+                $this->save(true);
+            } catch (CasErrorException $Ex) {
+                self::$Value = null;
+                $this->append($field, $Value, $type, $expiration, $tries - 1);
+            }
         } else {
-            /** @var Item $Item */
-            $Item = self::$Value->getValue()->{$field};
+            throw new CasErrorException('could not append value to cache');
         }
-
-        $Item->setExpiration($expiration)
-            ->append($Value);
-        self::$Value->setValue($Item);
-        $this->save(true);
     }
 
     /**
      * Invalidate cache
      */
     public function invalidate() {
-        $this->load(true);
+        $this->load();
         $this->clear();
         self::$Value = null;
         $this->save();

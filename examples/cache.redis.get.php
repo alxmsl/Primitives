@@ -6,23 +6,25 @@
  * To Public License, Version 2, as published by Sam Hocevar. See
  * http://www.wtfpl.net/ for more details.
  *
- * Simple cache usage example
+ * Cache on redis usage example
  * @author alxmsl
- * @date 8/28/14
  */
 
 include '../vendor/autoload.php';
 
+use alxmsl\Connection\Redis\RedisFactory;
 use alxmsl\Primitives\Cache\Cache;
+use alxmsl\Primitives\Cache\Item;
 use alxmsl\Primitives\Cache\Exception\ExpiredException;
 use alxmsl\Primitives\Cache\Exception\MissingException;
-use alxmsl\Primitives\Cache\Item;
 use alxmsl\Primitives\CacheFactory;
 
-$Connection = new Memcached('cache');
-$Connection->addServer('localhost', 11211);
+$Connection = RedisFactory::createRedisByConfig([
+    'host' => 'localhost',
+    'port' => 6379,
+]);
 
-$Cache = CacheFactory::createMemcachedCache('key_01', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createRedisCache('key_01', Cache::getClass(), $Connection);
 
 // Cache missing example
 $key = 'value_' . mt_rand(100, 500);
@@ -42,5 +44,5 @@ try {
 $Cache->set('some_key', 7);
 unset($Cache);
 
-$Cache = CacheFactory::createMemcachedCache('key_01', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createRedisCache('key_01', Cache::getClass(), $Connection);
 var_dump($Cache->get('some_key')->getValue() == 7);

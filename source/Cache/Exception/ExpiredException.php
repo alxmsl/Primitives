@@ -10,7 +10,7 @@
 namespace alxmsl\Primitives\Cache\Exception;
 
 /**
- * Exception for when expired key used
+ * Exception when expired key used
  * @author alxmsl
  * @date 9/3/14
  */

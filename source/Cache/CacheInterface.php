@@ -8,6 +8,7 @@
  */
 
 namespace alxmsl\Primitives\Cache;
+use alxmsl\Primitives\Cache\Exception\CasErrorException;
 use alxmsl\Primitives\Cache\Exception\MissingException;
 
 /**
@@ -35,8 +36,12 @@ interface CacheInterface {
      * Caching appender
      * @param string $field caching field name
      * @param mixed $Value appending value
+     * @param int $type value type
+     * @param int $expiration expiration timestamp
+     * @param int $tries append tries count
+     * @throws CasErrorException when CAS operation failed
      */
-    public function append($field, $Value);
+    public function append($field, $Value, $type, $expiration, $tries);
 
     /**
      * Invalidate cache

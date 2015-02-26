@@ -10,7 +10,6 @@
 namespace alxmsl\Primitives\Cache\Provider;
 use alxmsl\Primitives\Cache\Item;
 use Memcached;
-use stdClass;
 
 /**
  * Memcached cache instance provider
@@ -50,7 +49,7 @@ final class MemcachedProvider implements ProviderInterface {
      * Get key value from cache storage
      * @param string $key key from storage
      * @param bool $useCas use transaction or not
-     * @return stdClass value from storage
+     * @return Item value from storage
      */
     public function get($key, $useCas = false) {
         $Result = $useCas
@@ -66,7 +65,7 @@ final class MemcachedProvider implements ProviderInterface {
     /**
      * Set value by key in storage
      * @param string $key key from storage
-     * @param mixed $value store value
+     * @param Item $value store value
      * @param bool $useCas use transaction or not
      */
     public function set($key, $value, $useCas = false) {

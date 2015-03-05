@@ -65,6 +65,7 @@ trait CacheTrait {
      * @param string $field field name
      * @return Item cached value
      * @throws MissingException when needed field not found
+     * @throws ExpiredException when needed field expired
      */
     public function get($field) {
         $this->load(false);

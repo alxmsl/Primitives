@@ -13,7 +13,7 @@ use alxmsl\Connection\Redis\Exception\ConnectException;
 use alxmsl\Connection\Redis\Exception\KeyNotFoundException;
 use alxmsl\Primitives\Cache\Exception\CasErrorException;
 use alxmsl\Primitives\Cache\Item;
-use RedisException;
+use Redis;
 
 /**
  * Redis provider for cache support
@@ -31,15 +31,15 @@ final class RedisProvider implements ProviderInterface {
     private $watched = false;
 
     /**
-     * @return Connection|null
+     * @return Connection|null redis connection
      */
     public function getConnection() {
         return $this->Connection;
     }
 
     /**
-     * @param Connection|null $Connection
-     * @return Connection|null
+     * @param Connection|null $Connection redis connection
+     * @return $this self instance
      */
     public function setConnection(Connection $Connection) {
         $this->Connection = $Connection;
@@ -48,58 +48,54 @@ final class RedisProvider implements ProviderInterface {
 
     /**
      * @inheritdoc
+     * @throws ConnectException when redis instance unavailable
      */
     public function get($key, $useCas = false) {
         if ($useCas) {
-            try {
-                $this->getConnection()->watch($key);
-                $this->watched = true;
+            $this->watched = $this->getConnection()->watch($key);
+        }
 
-                $result = $this->getConnection()->get($key);
-                if ($result === false) {
-                    return new Item($key);
-                } else {
-                    return unserialize($result);
-                }
-            } catch (KeyNotFoundException $Ex) {
-                return new Item($key);
-            } catch (RedisException $ex) {
-                throw new ConnectException();
-            }
-        } else {
-            try {
-                return unserialize($this->getConnection()->get($key));
-            } catch (KeyNotFoundException $Ex) {
+        try {
+            $result = $this->getConnection()->get($key);
+            if ($result !== false) {
+                $Item = new Item($key);
+                $Item->unserialize($result);
+                return $Item;
+            } else {
                 return new Item($key);
             }
+        } catch (KeyNotFoundException $Ex) {
+            return new Item($key);
         }
     }
 
     /**
      * @inheritdoc
+     * @throws CasErrorException when CAS operation was impossible
+     * @throws ConnectException when redis instance unavailable
      */
-    public function set($key, $value, $useCas = false) {
-        if ($useCas && $this->watched) {
-            try {
+    public function set($key, $Value, $useCas = false) {
+        if ($useCas) {
+            if ($this->watched) {
                 $this->watched = false;
 
-                $Redis = $this->getConnection()->multi();
-                $result = $Redis->set($key, serialize($value));
-                if ($result === false
-                    || is_null($Redis->exec())) {
-
-                    throw new CasErrorException();
+                $result = $this->getConnection()->transaction(function(Redis $Instance) use ($key, $Value) {
+                    return $Instance->set($key, $Value->serialize());
+                });
+                if ($result[0] === false) {
+                    throw new CasErrorException('watched key was changed');
                 }
-            } catch (RedisException $ex) {
-                throw new CasErrorException();
+            } else {
+                throw new CasErrorException('key is not watching now');
             }
         } else {
-            $this->getConnection()->set($key, serialize($value));
+            $this->getConnection()->set($key, $Value->serialize());
         }
     }
 
     /**
      * @inheritdoc
+     * @throws ConnectException when redis instance unavailable
      */
     public function remove($key) {
         $this->getConnection()->delete($key);

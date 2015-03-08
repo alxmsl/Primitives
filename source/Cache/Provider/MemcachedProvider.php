@@ -30,7 +30,7 @@ final class MemcachedProvider implements ProviderInterface {
     /**
      * Connection instance setter
      * @param Memcached $Connection connection instance
-     * @return MemcachedProvider self instance
+     * @return $this provider instance
      */
     public function setConnection(Memcached $Connection) {
         $this->Connection = $Connection;
@@ -46,41 +46,37 @@ final class MemcachedProvider implements ProviderInterface {
     }
 
     /**
-     * Get key value from cache storage
-     * @param string $key key from storage
-     * @param bool $useCas use transaction or not
-     * @return Item value from storage
+     * @inheritdoc
      */
     public function get($key, $useCas = false) {
         $Result = $useCas
             ? $this->getConnection()->get($key, null, $this->casToken)
             : $this->getConnection()->get($key);
 
-        if ($this->getConnection()->getResultCode() != Memcached::RES_SUCCESS) {
-            $Result = new Item($key);
+        if ($this->getConnection()->getResultCode() == Memcached::RES_SUCCESS) {
+            $Item = new Item($key);
+            $Item->unserialize($Result);
+            return $Item;
+        } else {
+            return new Item($key);
         }
-        return $Result;
     }
 
     /**
-     * Set value by key in storage
-     * @param string $key key from storage
-     * @param Item $value store value
-     * @param bool $useCas use transaction or not
+     * @inheritdoc
      */
-    public function set($key, $value, $useCas = false) {
+    public function set($key, $Value, $useCas = false) {
         if ($useCas) {
             is_null($this->casToken)
-                ? $this->getConnection()->set($key, $value)
-                : $this->getConnection()->cas($this->casToken, $key, $value);
+                ? $this->getConnection()->set($key, $Value->serialize())
+                : $this->getConnection()->cas($this->casToken, $key, $Value->serialize());
         } else {
-            $this->getConnection()->set($key, $value);
+            $this->getConnection()->set($key, $Value->serialize());
         }
     }
 
     /**
-     * Remove key value from storage
-     * @param string $key key from storage
+     * @inheritdoc
      */
     public function remove($key) {
         $this->getConnection()->delete($key);

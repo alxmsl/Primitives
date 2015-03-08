@@ -17,6 +17,6 @@
         "psr-4": {"alxmsl\\Primitives\\": "source/"}
     },
     "require":{
-        "alxmsl/connection": ">=1.1.1"
+        "alxmsl/connection": ">=1.1.2"
     }
 }

@@ -9,6 +9,7 @@
 
 namespace alxmsl\Primitives\Cache\Provider;
 use alxmsl\Primitives\Cache\Exception\CasErrorException;
+use alxmsl\Primitives\Cache\Item;
 use stdClass;
 
 /**
@@ -21,18 +22,18 @@ interface ProviderInterface {
      * Get key value from cache storage
      * @param string $key key from storage
      * @param bool $useCas use transaction or not
-     * @return stdClass value from storage
+     * @return Item stored item instance
      */
-    public function get($key, $useCas);
+    public function get($key, $useCas = false);
 
     /**
      * Set value by key in storage
      * @param string $key key from storage
-     * @param mixed $value store value
+     * @param Item $Value store value
      * @param bool $useCas use transaction or not
      * @throws CasErrorException when CAS operation failed
      */
-    public function set($key, $value, $useCas);
+    public function set($key, $Value, $useCas = false);
 
     /**
      * Remove key value from storage

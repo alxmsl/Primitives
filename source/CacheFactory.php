@@ -23,7 +23,7 @@ final class CacheFactory {
      * @return null|Cache cache instance or null if level class not found
      */
     public static function createPredisCache($name, $levelClass, Client $Client) {
-        if (is_a($levelClass, Cache::getClass(), true)
+        if (is_a($levelClass, Cache::class, true)
             && class_exists($levelClass)) {
 
             $Provider = new PredisProvider();
@@ -44,7 +44,7 @@ final class CacheFactory {
      * @return null|Cache cache instance or null if level class not found
      */
     public static function createRedisCache($name, $levelClass, Connection $Connection) {
-        if (is_a($levelClass, Cache::getClass(), true)
+        if (is_a($levelClass, Cache::class, true)
             && class_exists($levelClass)) {
 
             $Provider = new RedisProvider();
@@ -65,7 +65,7 @@ final class CacheFactory {
      * @return null|Cache cache instance or null if level class not found
      */
     public static function createMemcachedCache($name, $levelClass, Memcached $Connection) {
-        if (is_a($levelClass, Cache::getClass(), true)
+        if (is_a($levelClass, Cache::class, true)
             && class_exists($levelClass)) {
 
             $Provider = new MemcachedProvider();

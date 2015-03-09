@@ -24,7 +24,7 @@ $Client = PredisFactory::createPredisByConfig([
     'port' => 6379,
 ]);
 
-$Cache = CacheFactory::createPredisCache('key_01', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_01', Cache::class, $Client);
 
 // Cache missing example
 $key = 'value_' . mt_rand(100, 500);
@@ -44,5 +44,5 @@ try {
 $Cache->set('some_key', 7);
 unset($Cache);
 
-$Cache = CacheFactory::createPredisCache('key_01', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_01', Cache::class, $Client);
 var_dump($Cache->get('some_key')->getValue() == 7);

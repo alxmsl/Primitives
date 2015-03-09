@@ -18,9 +18,10 @@ trait CacheLevelTrait {
     /**
      * Load cache data
      * @param bool $useCas use transaction for loading or not
+     * @param bool $forceReload force reload stored data
      */
-    protected function load($useCas = false) {
-        parent::load($useCas);
+    protected function load($useCas = false, $forceReload = false) {
+        parent::load($useCas, $forceReload);
         self::$Value = parent::getValueField($this->name);
     }
 

@@ -20,34 +20,34 @@ use alxmsl\Primitives\CacheFactory;
 $Connection = new Memcached('cache');
 $Connection->addServer('localhost', 11211);
 
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->invalidate();
 unset($Cache);
 
 // Append array example
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->invalidate();
 $Cache->append('some_array', 7, Item::TYPE_ARRAY);
 unset($Cache);
 
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->append('some_array', 1);
 var_dump($Cache->get('some_array')->getValue() == [7, 1]);
 
 // Increment example
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->append('some_number', 7, Item::TYPE_NUMBER);
 unset($Cache);
 
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->append('some_number', 2);
 var_dump($Cache->get('some_number')->getValue() == 9);
 
 // Strings concatenation example
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->append('some_string', 7, Item::TYPE_STRING);
 unset($Cache);
 
-$Cache = CacheFactory::createMemcachedCache('key_02', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createMemcachedCache('key_02', Cache::class, $Connection);
 $Cache->append('some_string', 2);
 var_dump($Cache->get('some_string')->getValue() == '72');

@@ -45,11 +45,6 @@ trait CacheTrait {
             self::$Value->setValue($Item);
         }
         return self::$Value->getValue()->{$field};
-
-//        if (!isset(self::$Value->{$field})) {
-//            self::$Value->{$field} = new Item($field);
-//        }
-//        return self::$Value->{$field};
     }
 
     /**
@@ -94,15 +89,12 @@ trait CacheTrait {
      * @param int $expiration expiration timestamp
      */
     public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0) {
-        if (is_null(self::$Value)) {
-            $this->load(false);
-        }
-
+        $this->load(true, true);
         $Item = new Item($field, $type);
         $Item->setValue($Value)
             ->setExpiration($expiration);
         self::$Value->setValue($Item);
-        $this->save();
+        $this->save(true);
     }
 
     /**
@@ -112,10 +104,11 @@ trait CacheTrait {
      * @param int $type value type
      * @param int $expiration expiration timestamp
      * @param int $tries append tries count
+     * @throws CasErrorException CAS operation exception
      */
     public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = 3) {
         if ($tries > 0) {
-            $this->load(true);
+            $this->load(true, true);
 
             if (is_null(self::$Value->getValue())
                 || !isset(self::$Value->getValue()->{$field})) {
@@ -132,7 +125,6 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
-                self::$Value = null;
                 $this->append($field, $Value, $type, $expiration, $tries - 1);
             }
         } else {
@@ -144,9 +136,9 @@ trait CacheTrait {
      * Invalidate cache
      */
     public function invalidate() {
-        $this->load();
+        $this->load(true, true);
         $this->clear();
         self::$Value = null;
-        $this->save();
+        $this->save(true);
     }
 }

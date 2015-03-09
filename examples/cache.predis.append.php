@@ -23,34 +23,34 @@ $Client = PredisFactory::createPredisByConfig([
     'port' => 6379,
 ]);
 
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->invalidate();
 unset($Cache);
 
 // Append array example
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->invalidate();
 $Cache->append('some_array', 7, Item::TYPE_ARRAY);
 unset($Cache);
 
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->append('some_array', 1);
 var_dump($Cache->get('some_array')->getValue() == [7, 1]);
 
 // Increment example
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->append('some_number', 7, Item::TYPE_NUMBER);
 unset($Cache);
 
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->append('some_number', 2);
 var_dump($Cache->get('some_number')->getValue() == 9);
 
 // Strings concatenation example
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->append('some_string', 7, Item::TYPE_STRING);
 unset($Cache);
 
-$Cache = CacheFactory::createPredisCache('key_02', Cache::getClass(), $Client);
+$Cache = CacheFactory::createPredisCache('key_02', Cache::class, $Client);
 $Cache->append('some_string', 2);
 var_dump($Cache->get('some_string')->getValue() == '72');

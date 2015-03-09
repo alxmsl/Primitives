@@ -105,7 +105,7 @@ final class Item implements JsonSerializable, Serializable {
     }
 
     /**
-     * @return null|stdClass|Item|mixed cached value
+     * @return null|stdClass|mixed cached value
      */
     public function getValue() {
         return $this->Value;

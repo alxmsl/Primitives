@@ -24,7 +24,7 @@ $Connection = RedisFactory::createRedisByConfig([
     'port' => 6379,
 ]);
 
-$Cache = CacheFactory::createRedisCache('key_01', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createRedisCache('key_01', Cache::class, $Connection);
 
 // Cache missing example
 $key = 'value_' . mt_rand(100, 500);
@@ -44,5 +44,5 @@ try {
 $Cache->set('some_key', 7);
 unset($Cache);
 
-$Cache = CacheFactory::createRedisCache('key_01', Cache::getClass(), $Connection);
+$Cache = CacheFactory::createRedisCache('key_01', Cache::class, $Connection);
 var_dump($Cache->get('some_key')->getValue() == 7);

@@ -22,15 +22,15 @@ use alxmsl\Primitives\Cache\Exception\MissingException;
 
 $Connection = new Memcached('cache');
 $Connection->addServer('localhost', 11211);
-$RootCache = CacheFactory::createMemcachedCache('key_03', Cache::getClass(), $Connection);
-$Level2Cache = CacheFactory::createMemcachedCache('key_03', Level2Cache::getClass(), $Connection);
-$Level3Cache = CacheFactory::createMemcachedCache('key_03', Level3Cache::getClass(), $Connection);
+$RootCache = CacheFactory::createMemcachedCache('key_03', Cache::class, $Connection);
+$Level2Cache = CacheFactory::createMemcachedCache('key_03', Level2Cache::class, $Connection);
+$Level3Cache = CacheFactory::createMemcachedCache('key_03', Level3Cache::class, $Connection);
 
 // Leveled value write and read
 $Level3Cache->set('some_level3_key', 5, Item::TYPE_NUMBER);
 unset($Level3Cache);
 
-$Level3Cache = CacheFactory::createMemcachedCache('key_03', Level3Cache::getClass(), $Connection);
+$Level3Cache = CacheFactory::createMemcachedCache('key_03', Level3Cache::class, $Connection);
 var_dump($Level3Cache->get('some_level3_key')->getValue() == 5);
 
 // Check cached level 3 value from level 2
@@ -47,7 +47,7 @@ $Level3Cache->invalidate();
 unset($Level2Cache);
 
 // Then check level 2 cached value
-$Level2Cache = CacheFactory::createMemcachedCache('key_03', Level2Cache::getClass(), $Connection);
+$Level2Cache = CacheFactory::createMemcachedCache('key_03', Level2Cache::class, $Connection);
 var_dump($Level2Cache->get('another_level2_key')->getValue() == 7);
 
 // Check what level 3 is empty

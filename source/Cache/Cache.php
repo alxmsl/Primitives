@@ -15,7 +15,7 @@ use alxmsl\Primitives\Cache\Traits\CacheTrait;
  * Base cache class
  * @author alxmsl
  * @date 8/28/14
- */ 
+ */
 class Cache implements CacheInterface {
     use CacheTrait;
 
@@ -35,7 +35,7 @@ class Cache implements CacheInterface {
     }
 
     /**
-     * Storgae provider getter
+     * Storage provider getter
      * @return null|ProviderInterface storage provider getter
      */
     public function getProvider() {
@@ -52,9 +52,10 @@ class Cache implements CacheInterface {
     /**
      * Load cache data
      * @param bool $useCas use transaction for loading or not
+     * @param bool $forceReload force reload stored data
      */
-    protected function load($useCas = false) {
-        if (is_null(self::$Value)) {
+    protected function load($useCas = false, $forceReload = false) {
+        if (is_null(self::$Value) || $forceReload) {
             self::$Value = $this->getProvider()->get($this->name, $useCas);
         }
     }
@@ -73,12 +74,4 @@ class Cache implements CacheInterface {
      * Clear cache data
      */
     protected function clear() {}
-
-    /**
-     * Getter for casted class name
-     * @return string cache instance class name
-     */
-    public static function getClass() {
-        return get_called_class();
-    }
 }

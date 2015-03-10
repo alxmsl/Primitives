@@ -87,14 +87,23 @@ trait CacheTrait {
      * @param mixed $Value caching value
      * @param int $type value type
      * @param int $expiration expiration timestamp
+     * @param int $tries set tries count
      */
-    public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0) {
-        $this->load(true, true);
-        $Item = new Item($field, $type);
-        $Item->setValue($Value)
-            ->setExpiration($expiration);
-        self::$Value->setValue($Item);
-        $this->save(true);
+    public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = 3) {
+        if ($tries > 0) {
+            $this->load(true, true);
+            $Item = new Item($field, $type);
+            $Item->setValue($Value)
+                ->setExpiration($expiration);
+            self::$Value->setValue($Item);
+            try {
+                $this->save(true);
+            } catch (CasErrorException $Ex) {
+                $this->set($field, $Value, $type, $expiration, $tries - 1);
+            }
+        } else {
+            throw new CasErrorException('could not set value to cache');
+        }
     }
 
     /**
@@ -134,11 +143,20 @@ trait CacheTrait {
 
     /**
      * Invalidate cache
+     * @param int $tries append tries count
      */
-    public function invalidate() {
-        $this->load(true, true);
-        $this->clear();
-        self::$Value = null;
-        $this->save(true);
+    public function invalidate($tries = 3) {
+        if ($tries > 0) {
+            $this->load(true, true);
+            $this->clear();
+            self::$Value = null;
+            try {
+                $this->save(true);
+            } catch (CasErrorException $Ex) {
+                $this->invalidate($tries - 1);
+            }
+        } else {
+            throw new CasErrorException('could not invalidate value in cache');
+        }
     }
 }

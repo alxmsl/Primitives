@@ -223,9 +223,9 @@ final class Item implements JsonSerializable, Serializable {
         $this->type       = (int) $data[1];
         $this->expiration = (int) $data[2];
         if ($this->type == 5) {
+            $this->Value = new stdClass();
             foreach ($data[3] as $nodeKey => $nodeValue) {
                 $Item = new Item($nodeValue[0]);
-                $this->Value = new stdClass();
                 $this->Value->{$nodeKey} = $Item->import($nodeValue);
             }
         } else {

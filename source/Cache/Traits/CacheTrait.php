@@ -89,7 +89,7 @@ trait CacheTrait {
      * @param int $expiration expiration timestamp
      * @param int $tries set tries count
      */
-    public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = 3) {
+    public function set($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = self::TRIES_SET) {
         if ($tries > 0) {
             $this->load(true, true);
             $Item = new Item($field, $type);
@@ -99,6 +99,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
+                usleep(self::TIMEOUT_CAS);
                 $this->set($field, $Value, $type, $expiration, $tries - 1);
             }
         } else {
@@ -115,7 +116,7 @@ trait CacheTrait {
      * @param int $tries append tries count
      * @throws CasErrorException CAS operation exception
      */
-    public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = 3) {
+    public function append($field, $Value, $type = Item::TYPE_STRING, $expiration = 0, $tries = self::TRIES_APPEND) {
         if ($tries > 0) {
             $this->load(true, true);
 
@@ -134,6 +135,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
+                usleep(self::TIMEOUT_CAS);
                 $this->append($field, $Value, $type, $expiration, $tries - 1);
             }
         } else {
@@ -145,7 +147,7 @@ trait CacheTrait {
      * Invalidate cache
      * @param int $tries append tries count
      */
-    public function invalidate($tries = 3) {
+    public function invalidate($tries = self::TRIES_INVALIDATE) {
         if ($tries > 0) {
             $this->load(true, true);
             $this->clear();
@@ -153,6 +155,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
+                usleep(self::TIMEOUT_CAS);
                 $this->invalidate($tries - 1);
             }
         } else {

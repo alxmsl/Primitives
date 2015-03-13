@@ -20,6 +20,18 @@ class Cache implements CacheInterface {
     use CacheTrait;
 
     /**
+     * Default tries count for CAS operations
+     */
+    const TRIES_APPEND     = 3,
+          TRIES_INVALIDATE = 3,
+          TRIES_SET        = 3;
+
+    /**
+     * CAS operation timeout for collisions, microseconds
+     */
+    const TIMEOUT_CAS = 5000;
+
+    /**
      * @var null|ProviderInterface storage provider instance
      */
     private $Provider = null;

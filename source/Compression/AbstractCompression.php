@@ -7,12 +7,15 @@
  * http://www.wtfpl.net/ for more details.
  */
 
-namespace alxmsl\Primitives\Queue\Exception;
-use Exception;
+namespace alxmsl\Primitives\Compression;
 
 /**
- * Exception for impossible enqueue operations
+ * Abstract compression class
  * @author alxmsl
- * @date 8/5/14
- */ 
-final class EnqueueException extends Exception {}
+ */
+abstract class AbstractCompression implements CompressionInterface {
+    /**
+     * Compression methods constants
+     */
+    const ZLIB_DEFLATE = 'zlib';
+}

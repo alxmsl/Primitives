@@ -16,7 +16,10 @@
     "autoload": {
         "psr-4": {"alxmsl\\Primitives\\": "source/"}
     },
-    "require":{
+    "require": {
         "alxmsl/connection": ">=1.1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.5.*"
     }
 }

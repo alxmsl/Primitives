@@ -7,12 +7,11 @@
  * http://www.wtfpl.net/ for more details.
  */
 
-namespace alxmsl\Primitives\Queue\Exception;
+namespace alxmsl\Primitives\Compression\Exception;
 use Exception;
 
 /**
- * Exception for impossible enqueue operations
+ * Exception when not found compression instance or encoding
  * @author alxmsl
- * @date 8/5/14
- */ 
-final class EnqueueException extends Exception {}
+ */
+final class CompressionNotFoundException extends Exception {}

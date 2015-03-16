@@ -99,7 +99,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
-                usleep(self::TIMEOUT_CAS);
+                usleep(mt_rand(self::TIMEOUT_CAS_MINIMUM, self::TIMEOUT_CAS_MAXIMUM));
                 $this->set($field, $Value, $type, $expiration, $tries - 1);
             }
         } else {
@@ -135,7 +135,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
-                usleep(self::TIMEOUT_CAS);
+                usleep(mt_rand(self::TIMEOUT_CAS_MINIMUM, self::TIMEOUT_CAS_MAXIMUM));
                 $this->append($field, $Value, $type, $expiration, $tries - 1);
             }
         } else {
@@ -155,7 +155,7 @@ trait CacheTrait {
             try {
                 $this->save(true);
             } catch (CasErrorException $Ex) {
-                usleep(self::TIMEOUT_CAS);
+                usleep(mt_rand(self::TIMEOUT_CAS_MINIMUM, self::TIMEOUT_CAS_MAXIMUM));
                 $this->invalidate($tries - 1);
             }
         } else {

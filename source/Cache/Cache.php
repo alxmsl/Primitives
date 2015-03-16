@@ -27,9 +27,10 @@ class Cache implements CacheInterface {
           TRIES_SET        = 3;
 
     /**
-     * CAS operation timeout for collisions, microseconds
+     * CAS operation timeout interval for collisions, microseconds
      */
-    const TIMEOUT_CAS = 5000;
+    const TIMEOUT_CAS_MINIMUM = 1000,
+          TIMEOUT_CAS_MAXIMUM = 10000;
 
     /**
      * @var null|ProviderInterface storage provider instance

@@ -9,8 +9,8 @@
 
 namespace alxmsl\Primitives\Semaphore\Provider;
 use alxmsl\Connection\Postgresql\Exception\ConnectException;
-use alxmsl\Connection\Redis\Connection;
 use alxmsl\Connection\Redis\Exception\ScriptExecutionException;
+use alxmsl\Connection\Redis\RedisInterface;
 use alxmsl\Primitives\Semaphore\Exception\StorageException;
 
 /**
@@ -19,7 +19,7 @@ use alxmsl\Primitives\Semaphore\Exception\StorageException;
  */
 final class RedisProvider extends AbstractProvider {
     /**
-     * @var Connection redis connection instance
+     * @var RedisInterface redis connection instance
      */
     private $Connection = null;
 
@@ -66,17 +66,17 @@ EOD;
     }
 
     /**
-     * @return Connection redis connection instance
+     * @return RedisInterface redis connection instance
      */
     public function getConnection() {
         return $this->Connection;
     }
 
     /**
-     * @param Connection $Connection redis connection instance
+     * @param RedisInterface $Connection redis connection instance
      * @return $this provider instance
      */
-    public function setConnection(Connection $Connection) {
+    public function setConnection(RedisInterface $Connection) {
         $this->Connection = $Connection;
         return $this;
     }

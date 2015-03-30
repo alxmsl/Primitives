@@ -8,7 +8,7 @@
  */
 
 namespace alxmsl\Primitives;
-use alxmsl\Connection\Redis\Connection;
+use alxmsl\Connection\Redis\RedisInterface;
 use alxmsl\Primitives\Semaphore\Provider\RedisProvider;
 use alxmsl\Primitives\Semaphore\Semaphore;
 
@@ -19,12 +19,14 @@ use alxmsl\Primitives\Semaphore\Semaphore;
 final class SemaphoreFactory {
     /**
      * Semaphore constructor
-     * @param Connection $Connection redis storage connection
+     * @param RedisInterface $Connection redis storage connection
      * @param string $name semaphore name
+     * @param int $timeout waiting timeout for semaphore, sec
+     * @param int $ttl TTL for semaphore, sec
      * @param int $value semaphore initial value
      * @return Semaphore semaphore instance
      */
-    public static function createRedisSemaphore(Connection $Connection, $name, $timeout = 1, $ttl = 5, $value = 1) {
+    public static function createRedisSemaphore(RedisInterface $Connection, $name, $timeout = 1, $ttl = 5, $value = 1) {
         $Provider = new RedisProvider();
         $Provider->setConnection($Connection);
         $Semaphore = new Semaphore($name, $value);

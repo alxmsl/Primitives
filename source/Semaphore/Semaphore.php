@@ -43,7 +43,8 @@ final class Semaphore implements SemaphoreInterface {
 
     /**
      * Storage provider setter
-     * @param Semaphore $Provider storage provider
+     * @param AbstractProvider $Provider storage provider
+     * @return $this self instance
      */
     public function setProvider(AbstractProvider $Provider) {
         $this->Provider = $Provider;
@@ -94,6 +95,7 @@ final class Semaphore implements SemaphoreInterface {
 
     /**
      * @param int $timeout waiting timeout, sec
+     * @return $this self instance
      */
     public function setTimeout($timeout) {
         $this->timeout = max(0, $timeout);
@@ -109,6 +111,7 @@ final class Semaphore implements SemaphoreInterface {
 
     /**
      * @param int $ttl semaphore inactive timeout, sec
+     * @return $this self instance
      */
     public function setTtl($ttl) {
         $this->ttl = max(0, $ttl);
